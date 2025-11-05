@@ -1,0 +1,5 @@
+data/filtered/*.csv
+data/filtered/*.jsonl.gz
+data/raw/
+*.csv
+*.gz

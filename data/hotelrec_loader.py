@@ -8,7 +8,7 @@
  *   - any numeric sub-rating inside property_dict
  *
  * Also prints a compact sparsity analysis on the first --analysis-n KEPT rows
- * (default: 1,000,000). Streams JSONL and writes filtered JSONL.GZ shards.
+ * (default: 1,000,000). Streams JSONL and writes filtered CSV files.
  *
  * Example:
  *   python data/hotelrec_loader.py --in data/HotelRec.txt --out-dir data/filtered \
@@ -17,7 +17,7 @@
 """
 from __future__ import annotations
 
-import argparse, json, gzip, os, math, hashlib
+import argparse, json, csv, os, math, hashlib
 from collections import Counter
 from typing import Iterator, Optional, List
 
@@ -89,7 +89,7 @@ def preprocess_and_analyze(in_path: str, out_dir: str, shard_size: int,
     os.makedirs(out_dir, exist_ok=True)
     scanned = kept = 0
     shard_idx = 0
-    buf: list[str] = []
+    buf: list[dict] = []
 
     # sparsity
     user_cnt, item_cnt, pairs = Counter(), Counter(), set()
@@ -99,9 +99,11 @@ def preprocess_and_analyze(in_path: str, out_dir: str, shard_size: int,
         nonlocal shard_idx, buf
         if not buf: return
         shard_idx += 1
-        out_path = os.path.join(out_dir, f"hotelrec_filtered_{shard_idx:05d}.jsonl.gz")
-        with gzip.open(out_path, "wt", encoding="utf-8") as gz:
-            gz.write("".join(buf))
+        out_path = os.path.join(out_dir, f"hotelrec_filtered_{shard_idx:05d}.csv")
+        with open(out_path, "w", encoding="utf-8", newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=list(buf[0].keys()))
+            writer.writeheader()
+            writer.writerows(buf)
         buf.clear()
 
     for rec in stream_jsonl(in_path, limit=read_limit):
@@ -119,9 +121,9 @@ def preprocess_and_analyze(in_path: str, out_dir: str, shard_size: int,
         if not drop_text:
             row["text"] = str(rec.get(F_TEXT, "")).strip()
         if not drop_props:
-            row["props"] = rec.get(F_PROPS, None)
+            row["props"] = str(rec.get(F_PROPS, None))
 
-        buf.append(json.dumps(row, ensure_ascii=False) + "\n")
+        buf.append(row)
         kept += 1
 
         # sampled sparsity on kept rows

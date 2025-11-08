@@ -1,10 +1,23 @@
+# Data Preprocessing changes: Max
+Instead of writing the full hotel name and user name I made a unqiue mapping to both and saved it. We can just use Integers afterall (memory efficeint)
+
+I also made preprocessing always output a simple CSV file of user_id, item_id, rating for the simple recSys, it then also output the sharded more complex functions - [user_id, item_id, rating, [subratings]] can be written to a single csv ~1GB
+
 # Setup
 Download HotelRec dataset from [https://github.com/Diego999/HotelRec/tree/master] and run:
 ```bash
 python data/hotelrec_loader.py \
-  --in /path/to/HotelRec.txt \
+  --in /path/to/dataset/HotelRec.txt \
   --out-dir data/filtered \
-  --drop-props
+  --shard-size 1000000 \
+  --drop-prop
+
+(create file with ratings and subrating)
+python data/hotelrec_loader.py \
+  --in ./HotelRec.txt \
+  --out-dir data/filtered \
+  --shard-size 30000000 \
+  --drop-text
 ```
 
 # Sample Data

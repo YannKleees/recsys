@@ -9,8 +9,10 @@ THEN filter out all users with <min_user_count reviews and all items with
 <min_item_count reviews (default: 3 and 3) computed on the kept rows.
 
 This script streams the JSONL twice when min-count filters are enabled:
-  - Pass 1: count users/items on rows that satisfy the keep_rule
+  - Pass 1: count users/items, create integer mappings, and save them.
   - Pass 2: write only rows whose user and item meet the thresholds
+    1. A single simple file: user_id, item_id, rating
+    2. Sharded detailed files: user_id, item_id, rating, review
 
 It also prints a compact sparsity analysis on the first --analysis-n KEPT rows.
 
@@ -22,6 +24,7 @@ from __future__ import annotations
 import argparse, json, csv, os, math, hashlib, sys
 from collections import Counter
 from typing import Iterator, Optional, List
+import numpy as np
 
 # HotelRec field names
 F_USER = "author"

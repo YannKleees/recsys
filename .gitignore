@@ -4,3 +4,4 @@ data/filtered/*.jsonl.gz
 data/raw/
 *.csv
 *.gz
+*.DS_Store

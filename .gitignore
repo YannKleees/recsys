@@ -5,3 +5,4 @@ data/raw/
 *.csv
 *.gz
 *.DS_Store
+*.json

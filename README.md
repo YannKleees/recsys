@@ -6,13 +6,14 @@ I also made preprocessing always output a simple CSV file of user_id, item_id, r
 # Setup
 Download HotelRec dataset from [https://github.com/Diego999/HotelRec/tree/master] and run:
 ```bash
+(create file with ratings and text - 30 shards)
 python data/hotelrec_loader.py \
   --in /path/to/dataset/HotelRec.txt \
   --out-dir data/filtered \
   --shard-size 1000000 \
   --drop-prop
 
-(create file with ratings and subrating)
+(create file with ratings and subrating - single shard)
 python data/hotelrec_loader.py \
   --in ./HotelRec.txt \
   --out-dir data/filtered \

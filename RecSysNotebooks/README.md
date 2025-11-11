@@ -1,3 +1,11 @@
+# EASE
+The reason you are getting all zeros is that for every single user in your test set, not one of the items they actually interacted with (their "ground truth") appeared in the top-k list your model recommended.
+
+EASE is an item-item collaborative filtering model. Its core logic is: "Users who liked Item A also liked Item B. Since you liked Item A, you might also like Item B."
+
+Doesnt work coz train doesnt include much or non of users in test!
+
+
 # Algorithm 1:
 ### matrix factorization Basic
 1. Concept:

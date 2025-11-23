@@ -13,7 +13,15 @@ python data/hotelrec_loader.py \
   --shard-size 1000000 \
   --drop-prop
 
-(create file with ratings and subrating - single shard)
+(create file with ratings and subrating - single shard) - run on 10 +
+python data/hotelrec_loader.py \
+  --in ./HotelRec.txt \
+  --out-dir data/filtered \
+  --shard-size 30000000 \
+  --min-user-count 10 \
+  --min-item-count 20 \
+  --drop-text
+
 python data/hotelrec_loader.py \
   --in ./HotelRec.txt \
   --out-dir data/filtered \
@@ -83,4 +91,6 @@ Rows belonging to items <3: ~56 (overlaps with user drops)
 Total scanned (pass2): 50,264,531
 Total kept (written) : 29,432,641
 Shards written       : 59
+
+13 MILION REVIEWS FOR 10+ USER/ITEM RATINGS
 ```

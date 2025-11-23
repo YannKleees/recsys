@@ -6,3 +6,9 @@ data/raw/
 *.gz
 *.DS_Store
 *.json
+*.pkl
+.idea/
+.vscode/
+.conda/
+*.bin
+

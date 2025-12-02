@@ -1,3 +1,6 @@
+# streamlit run App.py
+# ensure all needed filoes exist - they are not on GitHub due to size :D
+
 import streamlit as st
 import pandas as pd
 import numpy as np
